@@ -79,7 +79,7 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #008B8B 0%, #191970 100%);
     border: none;
     border-radius: 8px;
     padding: 12px;
@@ -88,7 +88,28 @@ body {
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: linear-gradient(135deg, #191970 0%, #008B8B 100%);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 139, 139, 0.4);
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #008B8B 0%, #191970 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(135deg, #191970 0%, #008B8B 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 139, 139, 0.4);
+    color: white;
+}
+
+.search-card {
+    background: linear-gradient(135deg, #008B8B 0%, #191970 100%);
+    border-radius: 10px;
 }
