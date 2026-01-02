@@ -48,7 +48,7 @@ namespace HealthMate.Pages.Admin
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = new IdentityUser { UserName = Email, Email = Email };
+            var user = new IdentityUser { UserName = Email, Email = Email, EmailConfirmed = true };
             var result = await _userManager.CreateAsync(user, Password);
 
             if (result.Succeeded)
@@ -70,6 +70,7 @@ namespace HealthMate.Pages.Admin
                 await _context.SaveChangesAsync();
 
                 Message = "Doctor added successfully!";
+                ModelState.Clear();
                 return Page();
             }
 
