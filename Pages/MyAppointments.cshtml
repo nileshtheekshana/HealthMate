@@ -4,57 +4,66 @@
     ViewData["Title"] = "My Appointments";
 }
 
-<h1>Book Appointment</h1>
+<div class="container mt-4">
+    <h2>My Appointments</h2>
 
-<div class="card mt-4">
-    <div class="card-body">
-        <form method="post">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Specialization</label>
-                    <select class="form-select" name="specialization" required>
-                        <option value="">Select Specialization</option>
-                        <option value="General">General Physician</option>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Dermatology">Dermatology</option>
-                        <option value="Pediatrics">Pediatrics</option>
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Doctor Name</label>
-                    <select class="form-select" name="doctor" required>
-                        <option value="">Select Doctor</option>
-                        <option value="Dr. Silva">Dr. Silva</option>
-                        <option value="Dr. Perera">Dr. Perera</option>
-                        <option value="Dr. Fernando">Dr. Fernando</option>
-                        <option value="Dr. Jayawardena">Dr. Jayawardena</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Clinic</label>
-                    <select class="form-select" name="clinic" required>
-                        <option value="">Select Clinic</option>
-                        <option value="Dental Clinic">Dental Clinic</option>
-                        <option value="Heart Clinic">Heart Clinic</option>
-                        <option value="Eye Clinic">Eye Clinic</option>
-                        <option value="Skin Clinic">Skin Clinic</option>
-                        <option value="General Clinic">General Clinic</option>
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Date</label>
-                    <input type="date" class="form-control" name="date" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Time</label>
-                    <input type="time" class="form-control" name="time" required>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Book Appointment</button>
-        </form>
-    </div>
+    @if (Model.Appointments.Any())
+    {
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Doctor</th>
+                    <th>Specialization</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var apt in Model.Appointments)
+                {
+                    <tr>
+                        <td>Dr. @apt.Doctor?.Name</td>
+                        <td>@apt.Doctor?.Specialization</td>
+                        <td>@apt.AppointmentDate.ToString("MMM dd, yyyy")</td>
+                        <td>@apt.TimeSlot</td>
+                        <td>
+                            @if (apt.Status == "Pending")
+                            {
+                                <span class="badge bg-warning">Pending</span>
+                            }
+                            else if (apt.Status == "Confirmed")
+                            {
+                                <span class="badge bg-success">Confirmed</span>
+                            }
+                            else if (apt.Status == "Cancelled")
+                            {
+                                <span class="badge bg-danger">Cancelled</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@apt.Status</span>
+                            }
+                        </td>
+                        <td>
+                            @if (apt.Status == "Pending" || apt.Status == "Confirmed")
+                            {
+                                <form method="post" asp-page-handler="Cancel" asp-route-id="@apt.Id" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Cancel this appointment?')">Cancel</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4">
+            You have no appointments yet.
+        </div>
+        <a asp-page="/Index" class="btn btn-primary">Find a Doctor</a>
+    }
 </div>
