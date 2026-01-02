@@ -21,6 +21,7 @@
                     <th>Experience</th>
                     <th>Contact</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,12 +43,22 @@
                                 <span class="badge bg-secondary">Not Available</span>
                             }
                         </td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@doctor.Id" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete Dr. @doctor.Name?')">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     }
-    else
+
+
+
+
+
+</div>    }        <div class="alert alert-info">No doctors found</div>    {    else    else
     {
         <div class="alert alert-info">No doctors found</div>
     }
