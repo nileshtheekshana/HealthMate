@@ -20,3 +20,37 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.logo {
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.nav-link-animated {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-link-animated:hover {
+    transform: translateY(-2px);
+    color: #667eea !important;
+}
+
+.nav-link-animated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link-animated:hover::after {
+    width: 80%;
+}
