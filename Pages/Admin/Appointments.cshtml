@@ -1,0 +1,76 @@
+@page
+@model AppointmentsModel
+@{
+    ViewData["Title"] = "Appointments";
+}
+
+<div class="container mt-4">
+    <h2>All Appointments</h2>
+
+    @if (Model.Appointments.Any())
+    {
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Doctor</th>
+                    <th>Specialization</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var apt in Model.Appointments)
+                {
+                    <tr>
+                        <td>@apt.PatientId.Substring(0, 8)...</td>
+                        <td>Dr. @apt.Doctor?.Name</td>
+                        <td>@apt.Doctor?.Specialization</td>
+                        <td>@apt.AppointmentDate.ToString("MMM dd, yyyy")</td>
+                        <td>@apt.TimeSlot</td>
+                        <td>@(string.IsNullOrEmpty(apt.Reason) ? "-" : apt.Reason)</td>
+                        <td>
+                            @if (apt.Status == "Pending")
+                            {
+                                <span class="badge bg-warning">Pending</span>
+                            }
+                            else if (apt.Status == "Confirmed")
+                            {
+                                <span class="badge bg-success">Confirmed</span>
+                            }
+                            else if (apt.Status == "Cancelled")
+                            {
+                                <span class="badge bg-danger">Cancelled</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@apt.Status</span>
+                            }
+                        </td>
+                        <td>
+                            @if (apt.Status == "Pending")
+                            {
+                                <form method="post" asp-page-handler="Confirm" asp-route-id="@apt.Id" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-success">Confirm</button>
+                                </form>
+                            }
+                            @if (apt.Status != "Cancelled")
+                            {
+                                <form method="post" asp-page-handler="Cancel" asp-route-id="@apt.Id" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Cancel this appointment?')">Cancel</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4">No appointments found</div>
+    }
+</div>
