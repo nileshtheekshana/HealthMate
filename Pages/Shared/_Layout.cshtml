@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HealthMate.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
     <header>
@@ -42,9 +43,43 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
-            &copy; 2026 - HealthMate - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>HealthMate</h5>
+                    <p>+94 71 0 225 225</p>
+                    <p>info@healthmate.com</p>
+                    <p>HealthMate PLC, No: 108, W A D Ramanayake Mawatha, Colombo 2, Sri Lanka.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Other</h5>
+                    <p><a asp-page="/Privacy">Terms and Conditions</a></p>
+                    <p><a href="#">FAQ</a></p>
+                    <p><a href="#">Feedback</a></p>
+                    <p><a asp-page="/Privacy">Privacy Policy</a></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>About</h5>
+                    <p><a asp-page="/AboutUs">The Company</a></p>
+                    <p><a href="#">Investor Relations</a></p>
+                    <p><a href="#">Partners</a></p>
+                    <p><a href="#">Awards</a></p>
+                    <p><a href="#">Careers</a></p>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 text-center text-md-start">
+                    <p>&copy; 2026 - HealthMate - All Rights Reserved</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" class="me-3"><i class="fab fa-youtube fa-lg"></i></a>
+                    <a href="#" class="me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
+                </div>
+            </div>
         </div>
     </footer>
 
