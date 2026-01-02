@@ -1,189 +1,127 @@
 ﻿@page
 @model HealthMate.Pages.AwarenessModel
 @{
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Awareness Programs - Medical Center</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f0f8ff;
-                color: #333;
-            }
-
-            header {
-                background-color: white;
-                padding: 20px 0;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            }
-
-            .logo-container {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 0 20px;
-            }
-
-            .logo {
-                height: 80px;
-            }
-
-            .welcome {
-                max-width: 1200px;
-                margin: 50px auto;
-                padding: 0 20px;
-                text-align: center;
-            }
-
-            .welcome h1 {
-                color: #4a90e2;
-                font-size: 36px;
-                margin-bottom: 20px;
-            }
-
-            .welcome p {
-                color: #666;
-                font-size: 18px;
-                line-height: 1.6;
-                max-width: 800px;
-                margin: 0 auto;
-            }
-
-            .programs {
-                max-width: 1200px;
-                margin: 60px auto;
-                padding: 0 20px;
-            }
-
-            .programs h2 {
-                color: #4a90e2;
-                font-size: 32px;
-                text-align: center;
-                margin-bottom: 40px;
-            }
-
-            .program-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 30px;
-            }
-
-            .program-card {
-                background: white;
-                border-radius: 10px;
-                padding: 20px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-
-            .program-card h3 {
-                color: #4a90e2;
-                margin-bottom: 15px;
-            }
-
-            .program-card img {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-                border-radius: 8px;
-                margin-bottom: 15px;
-            }
-
-            .program-card p {
-                color: #666;
-                line-height: 1.6;
-                margin-bottom: 15px;
-            }
-
-            .read-more {
-                color: #4a90e2;
-                text-decoration: none;
-                font-weight: bold;
-            }
-
-            .read-more:hover {
-                text-decoration: underline;
-            }
-        </style>
-    </head>
-    
-        
-    <body>
-       
-
-        <section class="welcome">
-            <h1>Welcome to the HealthMate</h1>
-            <p>We are delighted to welcome you to this virtual platform, created to share valuable insights, informative articles, and engaging discussions on all aspects of healthcare. Our goal is to empower you with knowledge, promote well-being, and build a community that recognizes the importance of proactive healthcare management. Whether you are a patient seeking medical guidance, a healthcare professional aiming to expand your expertise, or someone simply interested in wellness tips and the latest developments in healthcare, you are in the right place.
-
-We invite you to explore our collection of articles, guides, and resources designed to support you on your health journey. Our team of experienced writers and healthcare experts is dedicated to delivering well-researched, accurate, and engaging content you can trust. We believe everyone deserves access to reliable and trustworthy healthcare information, and our blog is committed to providing just that.
-
-We also encourage active participation from our readers. Feel free to leave comments, ask questions, and share your experiences. Your voice matters to us, and we strive to create a supportive and interactive community where we can learn and grow together.
-
-Thank you for choosing HealthMate as your trusted source for reliable healthcare information. We look forward to joining you on this journey and helping you make informed decisions for a healthier and happier life.
-
-Stay tuned for more exciting blog posts coming soon!.</p>
-        </section>
-
-        <section class="programs">
-            <h2>Our Awareness Programs</h2>
-            <div class="program-grid">
-                <div class="program-card">
-                    <h3>Diabetes Prevention</h3>
-                    <img src="~/images/photos/diabetes.jpeg" alt="Diabetes Prevention">
-                    <p>Preventing diabetes starts with a healthy lifestyle. Balanced diet, regular exercise, and routine check-ups can reduce risk and keep your blood sugar under control</p>
-                    <a href="#" class="read-more">Read More →</a>
-                </div>
-
-                <div class="program-card">
-                    <h3>Heart Health</h3>
-                    <img src="~/images/photos/heart.jpeg" alt="Heart Health">
-                    <p>Heart health is essential for overall well-being. Maintaining a healthy heart through balanced nutrition, regular exercise, and routine check-ups can prevent cardiovascular diseases and improve quality of life. Stay informed and take proactive steps to keep your heart strong.</p>
-                    <a href="#" class="read-more">Read More →</a>
-                </div>
-
-                <div class="program-card">
-                    <h3>Cancer Screening</h3>
-                    <img src="~/images/photos/cancer.jpeg" alt="Cancer Screening">
-                    <p>Early detection saves lives. Regular cancer screenings help identify potential issues before symptoms appear, increasing the chances of successful treatment. Stay proactive and schedule screenings as recommended</p>
-                    <a href="#" class="read-more">Read More →</a>
-                </div>
-
-                <div class="program-card">
-                    <h3>Mental Health</h3>
-                    <img src="~/images/photos/mental.jpeg" alt="Mental Health">
-                    <p>Mental health is just as important as physical health. Taking care of your mind through support, self-care, and professional guidance helps improve well-being, resilience, and quality of life</p>
-                    <a href="#" class="read-more">Read More →</a>
-                </div>
-
-                <div class="program-card">
-                    <h3>Nutrition & Diet</h3>
-                    <img src="~/images/photos/nutrition.jpeg" alt="Nutrition">
-                    <p>Good nutrition fuels a healthy life. Balanced eating habits support energy, immunity, and overall well-being. Make informed choices for a stronger, healthier you</p>
-                    <a href="#" class="read-more">Read More →</a>
-                </div>
-
-                <div class="program-card">
-                    <h3>Child Vaccination</h3>
-                    <img src="~/images/photos/vaccination.jpeg" alt="Vaccination">
-                    <p>Child vaccinations are vital for protecting young ones from serious illnesses. Staying up-to-date with immunizations helps build strong immunity and ensures a healthier future for your child.</p>
-                    <a href="#" class="read-more">Read More →</a>
-                </div>
-            </div>
-        </section>
-
-        <footer>
-            <!-- Footer will be added later -->
-        </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-    </html>
-
+    ViewData["Title"] = "Awareness";
 }
+
+<style>
+    .welcome {
+        text-align: center;
+        margin: 50px 0;
+    }
+
+    .welcome h1 {
+        color: #4a90e2;
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    .welcome p {
+        color: #666;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    .program-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+
+    .program-card h3 {
+        color: #4a90e2;
+        margin-bottom: 15px;
+    }
+
+    .program-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .program-card p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .read-more {
+        color: #4a90e2;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .read-more:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<section class="welcome">
+    <h1>Welcome to the HealthMate</h1>
+    <p>We are delighted to welcome you to this virtual platform, created to share valuable insights, informative articles, and engaging discussions on all aspects of healthcare. Our goal is to empower you with knowledge, promote well-being, and build a community that recognizes the importance of proactive healthcare management. Whether you are a patient seeking medical guidance, a healthcare professional aiming to expand your expertise, or someone simply interested in wellness tips and the latest developments in healthcare, you are in the right place.</p>
+    <p>We invite you to explore our collection of articles, guides, and resources designed to support you on your health journey. Our team of experienced writers and healthcare experts is dedicated to delivering well-researched, accurate, and engaging content you can trust. We believe everyone deserves access to reliable and trustworthy healthcare information, and our blog is committed to providing just that.</p>
+    <p>Thank you for choosing HealthMate as your trusted source for reliable healthcare information. We look forward to joining you on this journey and helping you make informed decisions for a healthier and happier life.</p>
+</section>
+
+<section class="programs">
+    <h2 class="text-center mb-4">Our Awareness Programs</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="program-card">
+                <h3>Diabetes Prevention</h3>
+                <img src="~/images/photos/diabetes.jpeg" alt="Diabetes Prevention">
+                <p>Preventing diabetes starts with a healthy lifestyle. Balanced diet, regular exercise, and routine check-ups can reduce risk and keep your blood sugar under control</p>
+                <a href="#" class="read-more">Read More →</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="program-card">
+                <h3>Heart Health</h3>
+                <img src="~/images/photos/heart.jpeg" alt="Heart Health">
+                <p>Heart health is essential for overall well-being. Maintaining a healthy heart through balanced nutrition, regular exercise, and routine check-ups can prevent cardiovascular diseases and improve quality of life. Stay informed and take proactive steps to keep your heart strong.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="program-card">
+                <h3>Cancer Screening</h3>
+                <img src="~/images/photos/cancer.jpeg" alt="Cancer Screening">
+                <p>Early detection saves lives. Regular cancer screenings help identify potential issues before symptoms appear, increasing the chances of successful treatment. Stay proactive and schedule screenings as recommended</p>
+                <a href="#" class="read-more">Read More →</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="program-card">
+                <h3>Mental Health</h3>
+                <img src="~/images/photos/mental.jpeg" alt="Mental Health">
+                <p>Mental health is just as important as physical health. Taking care of your mind through support, self-care, and professional guidance helps improve well-being, resilience, and quality of life</p>
+                <a href="#" class="read-more">Read More →</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="program-card">
+                <h3>Nutrition & Diet</h3>
+                <img src="~/images/photos/nutrition.jpeg" alt="Nutrition">
+                <p>Good nutrition fuels a healthy life. Balanced eating habits support energy, immunity, and overall well-being. Make informed choices for a stronger, healthier you</p>
+                <a href="#" class="read-more">Read More →</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="program-card">
+                <h3>Child Vaccination</h3>
+                <img src="~/images/photos/vaccination.jpeg" alt="Vaccination">
+                <p>Child vaccinations are vital for protecting young ones from serious illnesses. Staying up-to-date with immunizations helps build strong immunity and ensures a healthier future for your child.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </div>
+        </div>
+    </div>
+</section>
