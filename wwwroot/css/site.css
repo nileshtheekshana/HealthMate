@@ -122,3 +122,36 @@ body {
 .search-section .btn {
     height: 45px;
 }
+
+.dashboard-card-1 {
+    background: linear-gradient(135deg, #008B8B 0%, #191970 100%);
+}
+
+.dashboard-card-2 {
+    background: linear-gradient(135deg, #20B2AA 0%, #4169E1 100%);
+}
+
+.dashboard-card-3 {
+    background: linear-gradient(135deg, #48D1CC 0%, #6495ED 100%);
+}
+
+.dashboard-card-4 {
+    background: linear-gradient(135deg, #00CED1 0%, #1E90FF 100%);
+}
+
+.btn-cancel {
+    background: #6c757d;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    color: white;
+}
