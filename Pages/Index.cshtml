@@ -18,15 +18,17 @@
     </div>
 </div>
 
-<div class="search-section search-card text-white p-4 mt-4">
+
+<div class="find-doctor-section mt-4">
+    <h4><i class="fas fa-search-plus me-2"></i>Find Your Doctor</h4>
     <div class="row g-3">
-        <div class="col-md-4 position-relative">
-            <label class="form-label">Doctor name</label>
-            <input type="text" class="form-control" id="doctorInput" placeholder="Enter doctor name" autocomplete="off">
-            <div id="doctorDropdown" class="dropdown-menu w-100" style="max-height: 200px; overflow-y: auto;"></div>
+        <div class="col-md-5 position-relative">
+            <label class="form-label"><i class="fas fa-user-md me-1"></i>Doctor Name</label>
+            <input type="text" class="form-control" id="doctorInput" placeholder="Search by doctor name..." autocomplete="off">
+            <div id="doctorDropdown" class="dropdown-menu w-100"></div>
         </div>
-        <div class="col-md-4">
-            <label class="form-label">Specialization</label>
+        <div class="col-md-5">
+            <label class="form-label"><i class="fas fa-stethoscope me-1"></i>Specialization</label>
             <select class="form-select" id="specSelect">
                 <option value="">All Specializations</option>
                 @foreach (var spec in Model.Specializations)
@@ -35,139 +37,87 @@
                 }
             </select>
         </div>
-        <div class="col-md-4">
-            <label class="form-label">&nbsp;</label>
-            <button type="button" class="btn btn-light w-100" id="searchBtn">Search</button>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-search w-100" id="searchBtn">
+                <i class="fas fa-search me-1"></i>Search Doctors
+            </button>
         </div>
     </div>
 </div>
 
 <div id="doctorList" class="mt-4" style="display: none;"></div>
 
-<!-- Other Services Section -->
-<div class="mt-5">
-    <h3 class="text-primary mb-4">Other Medical Services</h3>
-    @if (Model.Services.Any())
-    {
+@if (Model.Services.Any())
+{
+    <div class="mt-5">
+        <h4 class="text-primary mb-4"><i class="fas fa-notes-medical me-2"></i>Other Medical Services</h4>
         <div class="row">
-            @foreach (var service in Model.Services)
+            @foreach (var s in Model.Services)
             {
                 <div class="col-md-4 mb-3">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">@service.Name</h5>
-                            <p class="card-text">@service.Description</p>
-                            <p class="mb-1"><strong>Category:</strong> @service.Category</p>
-                            <p class="mb-1"><strong>Price:</strong> $@service.Price</p>
+                            <h5 class="card-title">@s.Name</h5>
+                            <p class="card-text text-muted">@s.Description</p>
+                            <p class="mb-1"><small><strong>Category:</strong> @s.Category</small></p>
+                            <p class="mb-0"><small><strong>Price:</strong> $@s.Price</small></p>
                         </div>
-                        <div class="card-footer bg-white">
-                            <a href="#" class="btn btn-primary w-100">Book Service</a>
+                        <div class="card-footer bg-white border-0">
+                            <a href="#" class="btn btn-primary btn-sm w-100">Book Now</a>
                         </div>
                     </div>
                 </div>
             }
         </div>
-    }
-    else
-    {
-        <div class="alert alert-info">No services available at the moment.</div>
-    }
-</div>
+    </div>
+}
 
 <script>
-    var doctors = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Doctors.Select(d => new { d.Id, d.Name, d.Specialization, d.Qualification, d.Experience, d.ContactNumber })));
-    var doctorInput = document.getElementById('doctorInput');
+    var docs = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Doctors.Select(d => new { d.Id, d.Name, d.Specialization, d.Qualification, d.Experience, d.ContactNumber })));
+    var input = document.getElementById('doctorInput');
     var dropdown = document.getElementById('doctorDropdown');
-    var specSelect = document.getElementById('specSelect');
-    var doctorList = document.getElementById('doctorList');
-    var searchBtn = document.getElementById('searchBtn');
+    var spec = document.getElementById('specSelect');
+    var list = document.getElementById('doctorList');
+    var btn = document.getElementById('searchBtn');
 
-    function showDropdown(list) {
+    function filter() {
+        var n = input.value.toLowerCase();
+        var s = spec.value;
+        return docs.filter(d => (n === '' || d.Name.toLowerCase().includes(n)) && (s === '' || d.Specialization === s));
+    }
+
+    function showDropdown(data) {
         dropdown.innerHTML = '';
-        if (list.length === 0) {
+        if (data.length === 0) {
             dropdown.innerHTML = '<div class="dropdown-item text-muted">No doctors found</div>';
         } else {
-            list.forEach(function(doc) {
-                var item = document.createElement('a');
-                item.className = 'dropdown-item';
-                item.href = '#';
-                item.textContent = 'Dr. ' + doc.Name + ' - ' + doc.Specialization;
-                item.onclick = function(e) {
-                    e.preventDefault();
-                    doctorInput.value = doc.Name;
-                    dropdown.classList.remove('show');
-                    showDoctorDetails([doc]);
-                };
-                dropdown.appendChild(item);
+            data.forEach(d => {
+                var a = document.createElement('a');
+                a.className = 'dropdown-item';
+                a.href = '#';
+                a.innerHTML = '<i class="fas fa-user-md text-info me-2"></i><strong>Dr. ' + d.Name + '</strong> - ' + d.Specialization;
+                a.onclick = function(e) { e.preventDefault(); input.value = d.Name; dropdown.classList.remove('show'); showList([d]); };
+                dropdown.appendChild(a);
             });
         }
         dropdown.classList.add('show');
     }
 
-    function showDoctorDetails(list) {
-        doctorList.innerHTML = '';
-        if (list.length === 0) {
-            doctorList.innerHTML = '<div class="alert alert-info">No doctors found</div>';
+    function showList(data) {
+        list.innerHTML = '';
+        if (data.length === 0) {
+            list.innerHTML = '<div class="alert alert-info">No doctors found</div>';
         } else {
-            var grouped = {};
-            list.forEach(function(doc) {
-                if (!grouped[doc.Specialization]) {
-                    grouped[doc.Specialization] = [];
-                }
-                grouped[doc.Specialization].push(doc);
+            data.forEach(d => {
+                list.innerHTML += '<div class="card mb-3"><div class="card-body"><div class="row"><div class="col-md-8"><h5>Dr. ' + d.Name + '</h5><p class="mb-1">Qualification: ' + d.Qualification + '<br>Experience: ' + d.Experience + ' years<br>Contact: ' + d.ContactNumber + '</p></div><div class="col-md-4 d-flex align-items-center justify-content-end"><a href="/BookAppointment?doctorId=' + d.Id + '" class="btn btn-primary">Book Appointment</a></div></div></div></div>';
             });
-
-            for (var spec in grouped) {
-                var html = '<div class="mb-4"><h4 class="text-primary">' + spec + '</h4><div class="list-group">';
-                grouped[spec].forEach(function(doc) {
-                    html += '<div class="list-group-item"><div class="row">';
-                    html += '<div class="col-md-8"><h5>Dr. ' + doc.Name + '</h5>';
-                    html += '<p class="mb-1"><strong>Qualification:</strong> ' + doc.Qualification + '<br>';
-                    html += '<strong>Experience:</strong> ' + doc.Experience + ' years<br>';
-                    html += '<strong>Contact:</strong> ' + doc.ContactNumber + '</p></div>';
-                    html += '<div class="col-md-4 d-flex align-items-center justify-content-end">';
-                    html += '<a href="/BookAppointment?doctorId=' + doc.Id + '" class="btn btn-primary">Book Appointment</a></div>';
-                    html += '</div></div>';
-                });
-                html += '</div></div>';
-                doctorList.innerHTML += html;
-            }
         }
-        doctorList.style.display = 'block';
+        list.style.display = 'block';
     }
 
-    function filterDoctors() {
-        var name = doctorInput.value.toLowerCase();
-        var spec = specSelect.value;
-        var filtered = doctors.filter(function(doc) {
-            var matchName = name === '' || doc.Name.toLowerCase().includes(name);
-            var matchSpec = spec === '' || doc.Specialization === spec;
-            return matchName && matchSpec;
-        });
-        return filtered;
-    }
-
-    doctorInput.addEventListener('focus', function() {
-        showDropdown(filterDoctors());
-    });
-
-    doctorInput.addEventListener('input', function() {
-        showDropdown(filterDoctors());
-    });
-
-    specSelect.addEventListener('change', function() {
-        var filtered = filterDoctors();
-        showDropdown(filtered);
-        showDoctorDetails(filtered);
-    });
-
-    searchBtn.addEventListener('click', function() {
-        showDoctorDetails(filterDoctors());
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!doctorInput.contains(e.target) && !dropdown.contains(e.target)) {
-            dropdown.classList.remove('show');
-        }
-    });
+    input.addEventListener('focus', () => showDropdown(filter()));
+    input.addEventListener('input', () => showDropdown(filter()));
+    spec.addEventListener('change', () => { showDropdown(filter()); showList(filter()); });
+    btn.addEventListener('click', () => showList(filter()));
+    document.addEventListener('click', e => { if (!input.contains(e.target) && !dropdown.contains(e.target)) dropdown.classList.remove('show'); });
 </script>

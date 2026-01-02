@@ -171,3 +171,44 @@ html {
     margin-bottom: 5px;
     font-size: 13px;
 }
+
+.find-doctor-section {
+    background-color: #f8f9fa;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.find-doctor-section h4 {
+    color: #17a2b8;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.find-doctor-section .form-control,
+.find-doctor-section .form-select {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+}
+
+.find-doctor-section .btn-search {
+    background-color: #17a2b8;
+    color: white;
+    border-radius: 10px;
+    padding: 12px 25px;
+    border: none;
+}
+
+.find-doctor-section .btn-search:hover {
+    background-color: #138496;
+}
+
+.find-doctor-section .dropdown-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.find-doctor-section .dropdown-item:hover {
+    background-color: #e8f4f8;
+}
