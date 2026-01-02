@@ -17,6 +17,7 @@ namespace HealthMate.Pages
 
         public List<Doctor> Doctors { get; set; } = new();
         public List<string> Specializations { get; set; } = new();
+        public List<OtherService> Services { get; set; } = new();
 
         [BindProperty(SupportsGet = true)]
         public string SearchName { get; set; } = "";
@@ -41,6 +42,11 @@ namespace HealthMate.Pages
             }
 
             Doctors = await query.OrderBy(d => d.Name).ToListAsync();
+            
+            Services = await _context.OtherServices
+                .Where(s => s.IsAvailable)
+                .OrderBy(s => s.Category)
+                .ToListAsync();
         }
     }
 }
