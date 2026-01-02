@@ -38,7 +38,12 @@ namespace HealthMate.Pages
                 return Page();
             }
 
-            var user = new IdentityUser { UserName = Email, Email = Email };
+            var user = new IdentityUser 
+            { 
+                UserName = Email, 
+                Email = Email,
+                EmailConfirmed = true
+            };
             var result = await _userManager.CreateAsync(user, Password);
 
             if (result.Succeeded)
