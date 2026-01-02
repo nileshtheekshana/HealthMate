@@ -8,11 +8,13 @@ namespace HealthMate.Pages
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -48,6 +50,12 @@ namespace HealthMate.Pages
 
             if (result.Succeeded)
             {
+                if (!await _roleManager.RoleExistsAsync("Patient"))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole("Patient"));
+                }
+                
+                await _userManager.AddToRoleAsync(user, "Patient");
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToPage("/Index");
             }
