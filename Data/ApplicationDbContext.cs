@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using HealthMate.Models;
 
 namespace HealthMate.Data
 {
@@ -9,5 +10,7 @@ namespace HealthMate.Data
             : base(options)
         {
         }
+
+        public DbSet<Doctor> Doctors { get; set; }
     }
 }
