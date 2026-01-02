@@ -20,22 +20,124 @@
 
 <div class="search-section bg-primary text-white rounded p-4 mt-4">
     <div class="row g-3">
-        <div class="col-md-3">
+        <div class="col-md-4 position-relative">
             <label class="form-label">Doctor name</label>
-            <input type="text" class="form-control" placeholder="Search Doctor Name">
+            <input type="text" class="form-control" id="doctorInput" placeholder="Enter doctor name" autocomplete="off">
+            <div id="doctorDropdown" class="dropdown-menu w-100" style="max-height: 200px; overflow-y: auto;"></div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <label class="form-label">Specialization</label>
-            <select class="form-select">
-                <option selected>Select Specialization</option>
+            <select class="form-select" id="specSelect">
+                <option value="">All Specializations</option>
+                @foreach (var spec in Model.Specializations)
+                {
+                    <option value="@spec">@spec</option>
+                }
             </select>
         </div>
-        <div class="col-md-3">
-            <label class="form-label">Date</label>
-            <input type="date" class="form-control" placeholder="MM/DD/YYYY">
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
-            <button class="btn btn-secondary w-100">Search</button>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="button" class="btn btn-light w-100" id="searchBtn">Search</button>
         </div>
     </div>
 </div>
+
+<div id="doctorList" class="mt-4" style="display: none;">
+</div>
+
+<script>
+    var doctors = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Doctors.Select(d => new { d.Id, d.Name, d.Specialization, d.Qualification, d.Experience, d.ContactNumber })));
+    var doctorInput = document.getElementById('doctorInput');
+    var dropdown = document.getElementById('doctorDropdown');
+    var specSelect = document.getElementById('specSelect');
+    var doctorList = document.getElementById('doctorList');
+    var searchBtn = document.getElementById('searchBtn');
+
+    function showDropdown(list) {
+        dropdown.innerHTML = '';
+        if (list.length === 0) {
+            dropdown.innerHTML = '<div class="dropdown-item text-muted">No doctors found</div>';
+        } else {
+            list.forEach(function(doc) {
+                var item = document.createElement('a');
+                item.className = 'dropdown-item';
+                item.href = '#';
+                item.textContent = 'Dr. ' + doc.Name + ' - ' + doc.Specialization;
+                item.onclick = function(e) {
+                    e.preventDefault();
+                    doctorInput.value = doc.Name;
+                    dropdown.classList.remove('show');
+                    showDoctorDetails([doc]);
+                };
+                dropdown.appendChild(item);
+            });
+        }
+        dropdown.classList.add('show');
+    }
+
+    function showDoctorDetails(list) {
+        doctorList.innerHTML = '';
+        if (list.length === 0) {
+            doctorList.innerHTML = '<div class="alert alert-info">No doctors found</div>';
+        } else {
+            var grouped = {};
+            list.forEach(function(doc) {
+                if (!grouped[doc.Specialization]) {
+                    grouped[doc.Specialization] = [];
+                }
+                grouped[doc.Specialization].push(doc);
+            });
+
+            for (var spec in grouped) {
+                var html = '<div class="mb-4"><h4 class="text-primary">' + spec + '</h4><div class="list-group">';
+                grouped[spec].forEach(function(doc) {
+                    html += '<div class="list-group-item"><div class="row">';
+                    html += '<div class="col-md-8"><h5>Dr. ' + doc.Name + '</h5>';
+                    html += '<p class="mb-1"><strong>Qualification:</strong> ' + doc.Qualification + '<br>';
+                    html += '<strong>Experience:</strong> ' + doc.Experience + ' years<br>';
+                    html += '<strong>Contact:</strong> ' + doc.ContactNumber + '</p></div>';
+                    html += '<div class="col-md-4 d-flex align-items-center justify-content-end">';
+                    html += '<a href="#" class="btn btn-primary">Book Appointment</a></div>';
+                    html += '</div></div>';
+                });
+                html += '</div></div>';
+                doctorList.innerHTML += html;
+            }
+        }
+        doctorList.style.display = 'block';
+    }
+
+    function filterDoctors() {
+        var name = doctorInput.value.toLowerCase();
+        var spec = specSelect.value;
+        var filtered = doctors.filter(function(doc) {
+            var matchName = name === '' || doc.Name.toLowerCase().includes(name);
+            var matchSpec = spec === '' || doc.Specialization === spec;
+            return matchName && matchSpec;
+        });
+        return filtered;
+    }
+
+    doctorInput.addEventListener('focus', function() {
+        showDropdown(filterDoctors());
+    });
+
+    doctorInput.addEventListener('input', function() {
+        showDropdown(filterDoctors());
+    });
+
+    specSelect.addEventListener('change', function() {
+        var filtered = filterDoctors();
+        showDropdown(filtered);
+        showDoctorDetails(filtered);
+    });
+
+    searchBtn.addEventListener('click', function() {
+        showDoctorDetails(filterDoctors());
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!doctorInput.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+</script>

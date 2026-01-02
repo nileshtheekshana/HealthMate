@@ -4,24 +4,51 @@
     ViewData["Title"] = "Add Doctor";
 }
 
-<h2>Add Doctor</h2>
+<div class="container mt-4">
+    <h2>Add New Doctor</h2>
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            @if (!string.IsNullOrEmpty(Model.Message))
-            {
-                <div class="alert alert-info">@Model.Message</div>
-            }
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" type="email" required />
-            </div>
-            <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" type="password" required />
-            </div>
-            <button type="submit" class="btn btn-primary">Add Doctor</button>
-        </form>
-    </div>
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-info">@Model.Message</div>
+    }
+
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" asp-for="Email" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" asp-for="Password" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" asp-for="Name" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Specialization</label>
+            <input type="text" class="form-control" asp-for="Specialization" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Qualification</label>
+            <input type="text" class="form-control" asp-for="Qualification" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Experience (years)</label>
+            <input type="text" class="form-control" asp-for="Experience" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contact Number</label>
+            <input type="text" class="form-control" asp-for="ContactNumber" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Doctor</button>
+        <a asp-page="/Admin/Dashboard" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>
