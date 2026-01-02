@@ -4,4 +4,56 @@
     ViewData["Title"] = "My Appointments";
 }
 
-<h1>My Appointments</h1>
+<h1>Book Appointment</h1>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Specialization</label>
+                    <select class="form-select" name="specialization" required>
+                        <option value="">Select Specialization</option>
+                        <option value="General">General Physician</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Pediatrics">Pediatrics</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Doctor Name</label>
+                    <select class="form-select" name="doctor" required>
+                        <option value="">Select Doctor</option>
+                        <option value="Dr. Smith">Dr. Smith</option>
+                        <option value="Dr. Johnson">Dr. Johnson</option>
+                        <option value="Dr. Williams">Dr. Williams</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Clinic</label>
+                    <select class="form-select" name="clinic" required>
+                        <option value="">Select Clinic</option>
+                        <option value="Dental Clinic">Dental Clinic</option>
+                        <option value="Heart Clinic">Heart Clinic</option>
+                        <option value="Eye Clinic">Eye Clinic</option>
+                        <option value="Skin Clinic">Skin Clinic</option>
+                        <option value="General Clinic">General Clinic</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-control" name="date" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Time</label>
+                    <input type="time" class="form-control" name="time" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
+        </form>
+    </div>
+</div>
