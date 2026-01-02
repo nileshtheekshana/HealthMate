@@ -113,3 +113,12 @@ body {
     background: linear-gradient(135deg, #008B8B 0%, #191970 100%);
     border-radius: 10px;
 }
+
+.search-section .form-control,
+.search-section .form-select {
+    height: 45px;
+}
+
+.search-section .btn {
+    height: 45px;
+}
