@@ -23,10 +23,20 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// Apply migrations and seed data with error handling
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    DbSeeder.SeedServices(context);
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        context.Database.Migrate(); // Apply pending migrations
+        DbSeeder.SeedServices(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+    }
 }
 
 if (app.Environment.IsDevelopment())
