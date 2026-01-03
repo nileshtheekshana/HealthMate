@@ -1,0 +1,59 @@
+@page
+@model ServicesModel
+@{
+    ViewData["Title"] = "Manage Services";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Manage Services</h2>
+        <a asp-page="/Admin/AddService" class="btn btn-primary">Add New Service</a>
+    </div>
+
+    @if (Model.Services.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.Services)
+                {
+                    <tr>
+                        <td>@s.Name</td>
+                        <td>@s.Description</td>
+                        <td>@s.Category</td>
+                        <td>$@s.Price</td>
+                        <td>
+                            @if (s.IsAvailable)
+                            {
+                                <span class="badge bg-success">Available</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Not Available</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-page="/Admin/EditService" asp-route-id="@s.Id" class="btn btn-sm btn-warning">Edit</a>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@s.Id" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete @s.Name?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">No services found</div>
+    }
+</div>
