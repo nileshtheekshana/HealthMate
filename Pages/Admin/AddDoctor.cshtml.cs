@@ -1,57 +1,46 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Identity;
 using HealthMate.Data;
 using HealthMate.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace HealthMate.Pages.Admin
 {
     [Authorize(Roles = "Admin")]
     public class AddDoctorModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context;
 
-        public AddDoctorModel(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AddDoctorModel(UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
-            _context = context;
             _userManager = userManager;
-            _roleManager = roleManager;
+            _context = context;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; } = new();
+        public string Email { get; set; } = "";
 
-        public class InputModel
-        {
-            [Required]
-            public string Name { get; set; } = "";
+        [BindProperty]
+        public string Password { get; set; } = "";
 
-            [Required]
-            public string Specialization { get; set; } = "";
+        [BindProperty]
+        public string Name { get; set; } = "";
 
-            [Required]
-            public string Qualification { get; set; } = "";
+        [BindProperty]
+        public string Specialization { get; set; } = "";
 
-            [Required]
-            public int Experience { get; set; }
+        [BindProperty]
+        public string Qualification { get; set; } = "";
 
-            [Required]
-            public string ContactNumber { get; set; } = "";
+        [BindProperty]
+        public int Experience { get; set; }
 
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; } = "";
+        [BindProperty]
+        public string ContactNumber { get; set; } = "";
 
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; } = "";
-
-            public bool IsAvailable { get; set; } = true;
-        }
+        public string Message { get; set; } = "";
 
         public void OnGet()
         {
@@ -59,44 +48,32 @@ namespace HealthMate.Pages.Admin
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var user = new IdentityUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true };
-            var result = await _userManager.CreateAsync(user, Input.Password);
+            var user = new IdentityUser { UserName = Email, Email = Email, EmailConfirmed = true };
+            var result = await _userManager.CreateAsync(user, Password);
 
             if (result.Succeeded)
             {
-                if (!await _roleManager.RoleExistsAsync("Doctor"))
-                {
-                    await _roleManager.CreateAsync(new IdentityRole("Doctor"));
-                }
                 await _userManager.AddToRoleAsync(user, "Doctor");
 
-                var doc = new Models.Doctor
+                var doctor = new Doctor
                 {
-                    Name = Input.Name,
-                    Specialization = Input.Specialization,
-                    Qualification = Input.Qualification,
-                    Experience = Input.Experience,
-                    ContactNumber = Input.ContactNumber,
-                    Email = Input.Email,
-                    IsAvailable = Input.IsAvailable
+                    Name = Name,
+                    Specialization = Specialization,
+                    Qualification = Qualification,
+                    Experience = Experience,
+                    ContactNumber = ContactNumber,
+                    IsAvailable = true
                 };
 
-                _context.Doctors.Add(doc);
+                _context.Doctors.Add(doctor);
                 await _context.SaveChangesAsync();
 
-                return RedirectToPage("/Admin/Doctors");
+                Message = "Doctor added successfully!";
+                ModelState.Clear();
+                return Page();
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
+            Message = "Error: " + string.Join(", ", result.Errors.Select(e => e.Description));
             return Page();
         }
     }
