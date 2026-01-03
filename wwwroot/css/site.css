@@ -235,3 +235,7 @@ body > .container {
 .find-doctor-section .dropdown-item:hover {
     background-color: #e8f4f8;
 }
+
+#banner, #banner .carousel-inner, #banner img {
+    border-radius: 30px !important;
+}
