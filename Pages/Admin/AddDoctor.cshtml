@@ -7,61 +7,50 @@
 <div class="container mt-4">
     <h2>Add New Doctor</h2>
 
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-info">@Model.Message</div>
+    }
+
     <form method="post" class="mt-4">
-        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" asp-for="Email" required>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Input.Email" class="form-label">Email</label>
-            <input asp-for="Input.Email" class="form-control" />
-            <span asp-validation-for="Input.Email" class="text-danger"></span>
-        </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" asp-for="Password" required>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Input.Password" class="form-label">Password</label>
-            <input asp-for="Input.Password" type="password" class="form-control" />
-            <span asp-validation-for="Input.Password" class="text-danger"></span>
-        </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" asp-for="Name" required>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Input.Name" class="form-label">Name</label>
-            <input asp-for="Input.Name" class="form-control" />
-            <span asp-validation-for="Input.Name" class="text-danger"></span>
-        </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Specialization</label>
+                <input type="text" class="form-control" asp-for="Specialization" required>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Input.Specialization" class="form-label">Specialization</label>
-            <input asp-for="Input.Specialization" class="form-control" />
-            <span asp-validation-for="Input.Specialization" class="text-danger"></span>
-        </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Qualification</label>
+                <input type="text" class="form-control" asp-for="Qualification" required>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Input.Qualification" class="form-label">Qualification</label>
-            <input asp-for="Input.Qualification" class="form-control" />
-            <span asp-validation-for="Input.Qualification" class="text-danger"></span>
-        </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Experience (years)</label>
+                <input type="number" class="form-control" asp-for="Experience" required>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Input.Experience" class="form-label">Experience (years)</label>
-            <input asp-for="Input.Experience" type="number" class="form-control" />
-            <span asp-validation-for="Input.Experience" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Input.ContactNumber" class="form-label">Contact Number</label>
-            <input asp-for="Input.ContactNumber" class="form-control" />
-            <span asp-validation-for="Input.ContactNumber" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3 form-check">
-            <input asp-for="Input.IsAvailable" class="form-check-input" />
-            <label asp-for="Input.IsAvailable" class="form-check-label">Available</label>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Contact Number</label>
+                <input type="text" class="form-control" asp-for="ContactNumber" required>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Add Doctor</button>
-        <a asp-page="/Admin/Doctors" class="btn btn-secondary">Cancel</a>
+        <a asp-page="/Admin/Dashboard" class="btn btn-cancel">Cancel</a>
     </form>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

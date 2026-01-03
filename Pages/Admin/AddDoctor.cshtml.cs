@@ -55,13 +55,14 @@ namespace HealthMate.Pages.Admin
             {
                 await _userManager.AddToRoleAsync(user, "Doctor");
 
-                var doctor = new Doctor
+                var doctor = new Models.Doctor
                 {
                     Name = Name,
                     Specialization = Specialization,
                     Qualification = Qualification,
                     Experience = Experience,
                     ContactNumber = ContactNumber,
+                    Email = Email,
                     IsAvailable = true
                 };
 
