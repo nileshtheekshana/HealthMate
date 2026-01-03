@@ -17,7 +17,7 @@ namespace HealthMate.Pages.Admin
             _context = context;
         }
 
-        public List<Doctor> Doctors { get; set; } = new();
+        public List<Models.Doctor> Doctors { get; set; } = new();
 
         public async Task OnGetAsync()
         {
@@ -26,13 +26,12 @@ namespace HealthMate.Pages.Admin
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-            var doctor = await _context.Doctors.FindAsync(id);
-            if (doctor != null)
+            var doc = await _context.Doctors.FindAsync(id);
+            if (doc != null)
             {
-                _context.Doctors.Remove(doctor);
+                _context.Doctors.Remove(doc);
                 await _context.SaveChangesAsync();
             }
-
             return RedirectToPage();
         }
     }

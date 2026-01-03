@@ -1,0 +1,117 @@
+@page
+@model HealthMate.Pages.Doctor.PortalModel
+@{
+    ViewData["Title"] = "Doctor Portal";
+}
+
+<div class="container mt-4">
+    <h2>Doctor Portal</h2>
+
+    <p><strong>Logged in as:</strong> @Model.DebugEmail</p>
+
+    @if (Model.DoctorInfo != null)
+    {
+        <div class="card mt-4 mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>Dr. @Model.DoctorInfo.Name</h4>
+                        <p class="mb-1"><strong>Specialization:</strong> @Model.DoctorInfo.Specialization</p>
+                        <p class="mb-1"><strong>Qualification:</strong> @Model.DoctorInfo.Qualification</p>
+                        <p class="mb-1"><strong>Experience:</strong> @Model.DoctorInfo.Experience years</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <form method="post" asp-page-handler="ToggleStatus">
+                            @if (Model.DoctorInfo.IsAvailable)
+                            {
+                                <span class="badge bg-success mb-2 d-block">Available</span>
+                                <button type="submit" class="btn btn-warning w-100">Mark as Busy</button>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary mb-2 d-block">Busy</span>
+                                <button type="submit" class="btn btn-success w-100">Mark as Available</button>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <h5>Today's Appointments</h5>
+                        <h2>@Model.TodayCount</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <h5>Pending</h5>
+                        <h2>@Model.PendingCount</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5>Completed</h5>
+                        <h2>@Model.CompletedCount</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4>My Appointments</h4>
+        @if (Model.Appointments.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Patient</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var app in Model.Appointments)
+                    {
+                        <tr>
+                            <td>@app.AppointmentDate.ToString("yyyy-MM-dd")</td>
+                            <td>@app.TimeSlot</td>
+                            <td>@app.PatientId</td>
+                            <td>@app.Reason</td>
+                            <td>
+                                @if (app.Status == "Pending")
+                                {
+                                    <span class="badge bg-warning">Pending</span>
+                                }
+                                else if (app.Status == "Completed")
+                                {
+                                    <span class="badge bg-success">Completed</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@app.Status</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info">No appointments yet</div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-warning">No doctor profile found for this email. Please contact admin.</div>
+    }
+</div>

@@ -1,7 +1,7 @@
 @page
-@model DoctorsModel
+@model HealthMate.Pages.Admin.DoctorsModel
 @{
-    ViewData["Title"] = "Doctors";
+    ViewData["Title"] = "All Doctors";
 }
 
 <div class="container mt-4">
@@ -25,16 +25,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var doctor in Model.Doctors)
+                @foreach (var doc in Model.Doctors)
                 {
                     <tr>
-                        <td>Dr. @doctor.Name</td>
-                        <td>@doctor.Specialization</td>
-                        <td>@doctor.Qualification</td>
-                        <td>@doctor.Experience years</td>
-                        <td>@doctor.ContactNumber</td>
+                        <td>Dr. @doc.Name</td>
+                        <td>@doc.Specialization</td>
+                        <td>@doc.Qualification</td>
+                        <td>@doc.Experience years</td>
+                        <td>@doc.ContactNumber</td>
                         <td>
-                            @if (doctor.IsAvailable)
+                            @if (doc.IsAvailable)
                             {
                                 <span class="badge bg-success">Available</span>
                             }
@@ -44,8 +44,9 @@
                             }
                         </td>
                         <td>
-                            <form method="post" asp-page-handler="Delete" asp-route-id="@doctor.Id" style="display:inline;">
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete Dr. @doctor.Name?')">Delete</button>
+                            <a asp-page="/Admin/EditDoctor" asp-route-id="@doc.Id" class="btn btn-sm btn-warning">Edit</a>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@doc.Id" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete Dr. @doc.Name?')">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -53,12 +54,7 @@
             </tbody>
         </table>
     }
-
-
-
-
-
-</div>    }        <div class="alert alert-info">No doctors found</div>    {    else    else
+    else
     {
         <div class="alert alert-info">No doctors found</div>
     }

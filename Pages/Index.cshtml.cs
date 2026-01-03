@@ -15,7 +15,7 @@ namespace HealthMate.Pages
             _context = context;
         }
 
-        public List<Doctor> Doctors { get; set; } = new();
+        public List<Models.Doctor> Doctors { get; set; } = new();
         public List<string> Specializations { get; set; } = new();
         public List<OtherService> Services { get; set; } = new();
 

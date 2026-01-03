@@ -6,46 +6,56 @@
 
 <div class="container mt-4">
     <h2>Book Appointment</h2>
-    
-    <div class="card mt-3">
-        <div class="card-body">
-            <h5>Dr. @Model.Doctor.Name</h5>
-            <p>
-                <strong>Specialization:</strong> @Model.Doctor.Specialization<br>
-                <strong>Qualification:</strong> @Model.Doctor.Qualification<br>
-                <strong>Experience:</strong> @Model.Doctor.Experience years
-            </p>
-        </div>
-    </div>
 
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    @if (Model.Doctor != null)
     {
-        <div class="alert alert-danger mt-3">@Model.ErrorMessage</div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Dr. @Model.Doctor.Name</h5>
+                <p class="mb-1"><strong>Specialization:</strong> @Model.Doctor.Specialization</p>
+                <p class="mb-1"><strong>Qualification:</strong> @Model.Doctor.Qualification</p>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <input type="hidden" asp-for="DoctorId" value="@Model.Doctor.Id" />
+
+            <div class="mb-3">
+                <label asp-for="AppointmentDate" class="form-label">Date</label>
+                <input asp-for="AppointmentDate" type="date" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TimeSlot" class="form-label">Time Slot</label>
+                <select asp-for="TimeSlot" class="form-select">
+                    <option value="">Select Time</option>
+                    @foreach (var slot in Model.TimeSlots)
+                    {
+                        <option value="@slot">@slot</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Reason" class="form-label">Reason</label>
+                <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
+            <a asp-page="/Index" class="btn btn-secondary">Cancel</a>
+        </form>
     }
-
-    <form method="post" asp-route-doctorId="@Model.Doctor.Id" class="mt-4">
-        <div class="mb-3">
-            <label class="form-label">Date</label>
-            <input type="date" class="form-control" asp-for="AppointmentDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Time</label>
-            <select class="form-select" asp-for="TimeSlot" required>
-                <option value="">Select Time</option>
-                @foreach (var slot in Model.TimeSlots)
-                {
-                    <option value="@slot">@slot</option>
-                }
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Reason (Optional)</label>
-            <textarea class="form-control" asp-for="Reason" rows="3"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Book Appointment</button>
-        <a asp-page="/Index" class="btn btn-secondary">Cancel</a>
-    </form>
+    else
+    {
+        <div class="alert alert-danger">Doctor not found</div>
+    }
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

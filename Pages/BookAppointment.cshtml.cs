@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using HealthMate.Data;
 using HealthMate.Models;
-using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
 
 namespace HealthMate.Pages
 {
@@ -18,10 +17,12 @@ namespace HealthMate.Pages
             _context = context;
         }
 
-        public Doctor Doctor { get; set; } = new();
+        public Models.Doctor? Doctor { get; set; }
+        public string? ErrorMessage { get; set; }
+        public List<string> TimeSlots { get; set; } = new() { "09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM", "04:00 PM" };
 
         [BindProperty]
-        public DateTime AppointmentDate { get; set; } = DateTime.Today.AddDays(1);
+        public DateTime AppointmentDate { get; set; }
 
         [BindProperty]
         public string TimeSlot { get; set; } = "";
@@ -29,58 +30,44 @@ namespace HealthMate.Pages
         [BindProperty]
         public string Reason { get; set; } = "";
 
-        public string ErrorMessage { get; set; } = "";
-
-        public List<string> TimeSlots { get; set; } = new()
-        {
-            "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
-            "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
-        };
+        [BindProperty]
+        public int DoctorId { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int doctorId)
         {
-            var doctor = await _context.Doctors.FindAsync(doctorId);
-            if (doctor == null)
+            Doctor = await _context.Doctors.FindAsync(doctorId);
+            if (Doctor == null)
             {
                 return NotFound();
             }
-
-            Doctor = doctor;
+            DoctorId = doctorId;
+            AppointmentDate = DateTime.Today.AddDays(1);
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int doctorId)
+        public async Task<IActionResult> OnPostAsync()
         {
-            var doctor = await _context.Doctors.FindAsync(doctorId);
-            if (doctor == null)
+            Doctor = await _context.Doctors.FindAsync(DoctorId);
+            if (Doctor == null)
             {
                 return NotFound();
             }
 
-            Doctor = doctor;
-
-            if (AppointmentDate < DateTime.Today)
+            if (string.IsNullOrEmpty(TimeSlot) || string.IsNullOrEmpty(Reason))
             {
-                ErrorMessage = "Cannot book past dates";
+                ErrorMessage = "Please fill all fields";
                 return Page();
             }
-
-            if (string.IsNullOrEmpty(TimeSlot))
-            {
-                ErrorMessage = "Select a time slot";
-                return Page();
-            }
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var appointment = new Appointment
             {
-                PatientId = userId ?? "",
-                DoctorId = doctorId,
+                PatientId = User.Identity?.Name ?? "",
+                DoctorId = DoctorId,
                 AppointmentDate = AppointmentDate,
                 TimeSlot = TimeSlot,
                 Reason = Reason,
-                Status = "Pending"
+                Status = "Pending",
+                CreatedAt = DateTime.Now
             };
 
             _context.Appointments.Add(appointment);
