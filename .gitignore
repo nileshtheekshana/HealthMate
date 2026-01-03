@@ -72,3 +72,9 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+
+# Configuration with secrets
+appsettingoriginal.json
+
+CreateAdmin.cs
+SeedData.cs

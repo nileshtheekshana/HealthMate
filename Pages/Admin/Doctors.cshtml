@@ -1,0 +1,61 @@
+@page
+@model HealthMate.Pages.Admin.DoctorsModel
+@{
+    ViewData["Title"] = "All Doctors";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>All Doctors</h2>
+        <a asp-page="/Admin/AddDoctor" class="btn btn-primary">Add New Doctor</a>
+    </div>
+
+    @if (Model.Doctors.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Specialization</th>
+                    <th>Qualification</th>
+                    <th>Experience</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var doc in Model.Doctors)
+                {
+                    <tr>
+                        <td>Dr. @doc.Name</td>
+                        <td>@doc.Specialization</td>
+                        <td>@doc.Qualification</td>
+                        <td>@doc.Experience years</td>
+                        <td>@doc.ContactNumber</td>
+                        <td>
+                            @if (doc.IsAvailable)
+                            {
+                                <span class="badge bg-success">Available</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Not Available</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-page="/Admin/EditDoctor" asp-route-id="@doc.Id" class="btn btn-sm btn-warning">Edit</a>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@doc.Id" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete Dr. @doc.Name?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">No doctors found</div>
+    }
+</div>

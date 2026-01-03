@@ -4,7 +4,127 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div id="banner" class="carousel slide rounded" data-bs-ride="carousel">
+    <div class="carousel-inner rounded">
+        <div class="carousel-item active">
+            <img src="~/images/bannner/banner1.jpeg" class="d-block w-100 rounded" alt="Banner 1">
+        </div>
+        <div class="carousel-item">
+            <img src="~/images/bannner/banner2.jpeg" class="d-block w-100 rounded" alt="Banner 2">
+        </div>
+        <div class="carousel-item">
+            <img src="~/images/bannner/banner3.jpeg" class="d-block w-100 rounded" alt="Banner 3">
+        </div>
+    </div>
 </div>
+
+<div class="find-doctor-section mt-4">
+    <h4><i class="fas fa-search-plus me-2"></i>Find Your Doctor</h4>
+    <div class="row g-3">
+        <div class="col-md-5 position-relative">
+            <label class="form-label"><i class="fas fa-user-md me-1"></i>Doctor Name</label>
+            <input type="text" class="form-control" id="doctorInput" placeholder="Search by doctor name..." autocomplete="off">
+            <div id="doctorDropdown" class="dropdown-menu w-100"></div>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label"><i class="fas fa-stethoscope me-1"></i>Specialization</label>
+            <select class="form-select" id="specSelect">
+                <option value="">All Specializations</option>
+                @foreach (var spec in Model.Specializations)
+                {
+                    <option value="@spec">@spec</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-search w-100" id="searchBtn">
+                <i class="fas fa-search me-1"></i>Search Doctors
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="doctorList" class="mt-4" style="display: none;"></div>
+
+@if (Model.Services.Any())
+{
+    <div class="mt-5">
+        <h4 class="text-primary mb-4"><i class="fas fa-notes-medical me-2"></i>Other Medical Services</h4>
+        <div class="row">
+            @foreach (var s in Model.Services)
+            {
+                var img = s.Name == "Blood Test" ? "blood.jpeg" 
+                    : s.Name == "PCR Test" ? "pcr.jpeg" 
+                    : s.Name == "ECG Test" ? "ecg.jpeg"
+                    : s.Name == "X-Ray" ? "xtray.jpeg"
+                    : s.Name == "Eye Check" ? "eye.jpeg"
+                    : s.Name == "Ultrasound" ? "ultrasound.jpeg"
+                    : "placeholder.jpg";
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="~/images/services/@img" class="card-img-top" alt="@s.Name" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">@s.Name</h5>
+                            <p class="card-text text-muted">@s.Description</p>
+                            <p class="mb-1"><small><strong>Category:</strong> @s.Category</small></p>
+                            <p class="mb-0"><small><strong>Price:</strong> LKR @s.Price</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <a href="#" class="btn btn-primary btn-sm w-100">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<script>
+    var docs = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Doctors.Select(d => new { d.Id, d.Name, d.Specialization, d.Qualification, d.Experience, d.ContactNumber })));
+    var input = document.getElementById('doctorInput');
+    var dropdown = document.getElementById('doctorDropdown');
+    var spec = document.getElementById('specSelect');
+    var list = document.getElementById('doctorList');
+    var btn = document.getElementById('searchBtn');
+
+    function filter() {
+        var n = input.value.toLowerCase();
+        var s = spec.value;
+        return docs.filter(d => (n === '' || d.Name.toLowerCase().includes(n)) && (s === '' || d.Specialization === s));
+    }
+
+    function showDropdown(data) {
+        dropdown.innerHTML = '';
+        if (data.length === 0) {
+            dropdown.innerHTML = '<div class="dropdown-item text-muted">No doctors found</div>';
+        } else {
+            data.forEach(d => {
+                var a = document.createElement('a');
+                a.className = 'dropdown-item';
+                a.href = '#';
+                a.innerHTML = '<i class="fas fa-user-md text-info me-2"></i><strong>Dr. ' + d.Name + '</strong> - ' + d.Specialization;
+                a.onclick = function(e) { e.preventDefault(); input.value = d.Name; dropdown.classList.remove('show'); showList([d]); };
+                dropdown.appendChild(a);
+            });
+        }
+        dropdown.classList.add('show');
+    }
+
+    function showList(data) {
+        list.innerHTML = '';
+        if (data.length === 0) {
+            list.innerHTML = '<div class="alert alert-info">No doctors found</div>';
+        } else {
+            data.forEach(d => {
+                list.innerHTML += '<div class="card mb-3"><div class="card-body"><div class="row"><div class="col-md-8"><h5>Dr. ' + d.Name + '</h5><p class="mb-1">Qualification: ' + d.Qualification + '<br>Experience: ' + d.Experience + ' years<br>Contact: ' + d.ContactNumber + '</p></div><div class="col-md-4 d-flex align-items-center justify-content-end"><a href="/BookAppointment?doctorId=' + d.Id + '" class="btn btn-primary">Book Appointment</a></div></div></div></div>';
+            });
+        }
+        list.style.display = 'block';
+    }
+
+    input.addEventListener('focus', () => showDropdown(filter()));
+    input.addEventListener('input', () => showDropdown(filter()));
+    spec.addEventListener('change', () => { showDropdown(filter()); showList(filter()); });
+    btn.addEventListener('click', () => showList(filter()));
+    document.addEventListener('click', e => { if (!input.contains(e.target) && !dropdown.contains(e.target)) dropdown.classList.remove('show'); });
+</script>

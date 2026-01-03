@@ -1,0 +1,64 @@
+@page
+@model UsersModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container mt-4">
+    <h2>All Users</h2>
+
+    @if (Model.Users.Any())
+    {
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Email Confirmed</th>
+                    <th>User ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>
+                            @if (user.Role == "Admin")
+                            {
+                                <span class="badge bg-danger">@user.Role</span>
+                            }
+                            else if (user.Role == "Doctor")
+                            {
+                                <span class="badge bg-primary">@user.Role</span>
+                            }
+                            else if (user.Role == "Patient")
+                            {
+                                <span class="badge bg-info">@user.Role</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@user.Role</span>
+                            }
+                        </td>
+                        <td>
+                            @if (user.EmailConfirmed)
+                            {
+                                <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning">No</span>
+                            }
+                        </td>
+                        <td><small>@user.Id</small></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4">No users found</div>
+    }
+</div>
